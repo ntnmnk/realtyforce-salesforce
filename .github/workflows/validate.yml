@@ -1,0 +1,16 @@
+name: Validate source
+on: [push, pull_request]
+jobs:
+  local-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run lint
+      - run: npm run test:unit -- -- --runInBand
+      - run: python3 scripts/validate_structure.py
+# Salesforce compilation/deployment validation requires a separate authenticated sandbox job.

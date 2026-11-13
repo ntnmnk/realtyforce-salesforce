@@ -1,0 +1,40 @@
+
+<template>
+    <div class="slds-m-top_medium
+                slds-grid
+                slds-grid_align-center
+                slds-grid_vertical-align-center
+                slds-wrap">
+
+        <lightning-button
+            label="First"
+            onclick={handleFirst}
+            disabled={isPreviousDisabled}>
+        </lightning-button>
+
+        <lightning-button
+            label="Previous"
+            onclick={handlePrevious}
+            disabled={isPreviousDisabled}
+            class="slds-m-left_x-small">
+        </lightning-button>
+
+        <span class="slds-m-horizontal_small">
+            {pageText}
+        </span>
+
+        <lightning-button
+            label="Next"
+            onclick={handleNext}
+            disabled={isNextDisabled}>
+        </lightning-button>
+
+        <lightning-button
+            label="Last"
+            onclick={handleLast}
+            disabled={isNextDisabled}
+            class="slds-m-left_x-small">
+        </lightning-button>
+
+    </div>
+</template>

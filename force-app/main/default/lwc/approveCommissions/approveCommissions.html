@@ -1,0 +1,135 @@
+<template>
+  <lightning-card title={cardTitle}>
+    <div class="slds-p-around_medium slds-is-relative">
+      <!-- 1. Show spinner while loading or saving -->
+      <template lwc:if={isBusy}>
+        <lightning-spinner alternative-text="Loading" size="small">
+        </lightning-spinner>
+      </template>
+
+      <!-- 2. Display error messages -->
+      <template lwc:if={errorMessage}>
+        <p role="alert" class="slds-text-color_error slds-m-bottom_small">
+          {errorMessage}
+        </p>
+      </template>
+
+      <!-- 3. Show content after data has loaded -->
+      <template lwc:if={isLoaded}>
+        <!-- Regional sales summary -->
+        <p>
+          Regional YTD Sales:
+          <lightning-formatted-number
+            value={regionSummary.regionYearToDateSales}
+            format-style="currency"
+          >
+          </lightning-formatted-number>
+        </p>
+
+        <!-- Number of selected properties -->
+        <p class="slds-m-vertical_small">
+          Selected Properties: {selectedCount}
+        </p>
+
+        <!-- 4. Display pending properties -->
+        <template lwc:if={hasPendingApprovals}>
+          <lightning-datatable
+            key-field="propertyId"
+            data={propertiesOnCurrentPage}
+            columns={columns}
+            selected-rows={selectedRowsOnPage}
+            onrowselection={handleRowSelection}
+            draft-values={draftValues}
+            oncellchange={handleCellChange}
+            suppress-bottom-bar
+          >
+          </lightning-datatable>
+
+          <!-- 5. Pagination buttons -->
+          <div class="slds-m-top_medium slds-text-align_center">
+            <lightning-button
+              label="First"
+              onclick={handleFirst}
+              disabled={isPreviousDisabled}
+            >
+            </lightning-button>
+
+            <lightning-button
+              label="Previous"
+              onclick={handlePrevious}
+              disabled={isPreviousDisabled}
+            >
+            </lightning-button>
+
+            <span class="slds-m-horizontal_small">
+              Page {currentPageNumber} of {totalPages}
+            </span>
+
+            <lightning-button
+              label="Next"
+              onclick={handleNext}
+              disabled={isNextDisabled}
+            >
+            </lightning-button>
+
+            <lightning-button
+              label="Last"
+              onclick={handleLast}
+              disabled={isNextDisabled}
+            >
+            </lightning-button>
+          </div>
+        </template>
+
+        <!-- 6. Display when nothing needs approval -->
+        <template lwc:else>
+          <div
+            class="slds-box slds-theme_default slds-text-align_center"
+            role="status"
+          >
+            <lightning-icon
+              icon-name="utility:success"
+              alternative-text="No pending approvals"
+              size="small"
+            >
+            </lightning-icon>
+
+            <h2 class="slds-text-heading_small slds-m-top_small">
+              You're all caught up
+            </h2>
+
+            <p>There are no properties pending approval in this region.</p>
+          </div>
+        </template>
+      </template>
+    </div>
+
+    <!-- 7. Action buttons -->
+    <div slot="footer">
+      <lightning-button
+        label="Refresh"
+        onclick={handleRefresh}
+        disabled={isBusy}
+      >
+      </lightning-button>
+
+      <lightning-button label="Cancel" onclick={handleCancel} disabled={isBusy}>
+      </lightning-button>
+
+      <lightning-button
+        label="Approve and Continue"
+        onclick={handleSubmitAndContinue}
+        disabled={isSubmitDisabled}
+      >
+      </lightning-button>
+
+      <lightning-button
+        label="Approve"
+        variant="brand"
+        onclick={handleSubmit}
+        disabled={isSubmitDisabled}
+      >
+      </lightning-button>
+    </div>
+  </lightning-card>
+</template>

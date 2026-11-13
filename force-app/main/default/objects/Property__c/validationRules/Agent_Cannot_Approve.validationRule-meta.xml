@@ -1,0 +1,7 @@
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+<fullName>Agent_Cannot_Approve</fullName><active>true</active>
+<errorConditionFormula
+  >AND($Permission.MB_RealEstateAgent, ISPICKVAL(Status__c, "Closed Approved"), OR(ISNEW(), ISCHANGED(Status__c)), OR(ISBLANK(Sales_Office__c), Sales_Office__r.Sales_Region__r.Regional_Manager__c &lt;&gt; $User.Id))</errorConditionFormula>
+<errorMessage
+  >Only the assigned regional manager may approve commissions.</errorMessage>
+</ValidationRule>

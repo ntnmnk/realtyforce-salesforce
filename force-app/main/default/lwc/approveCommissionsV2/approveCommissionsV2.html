@@ -1,0 +1,110 @@
+
+<template>
+    <lightning-card title={cardTitle}>
+
+        <div class="slds-p-around_medium slds-is-relative">
+
+            <!-- Loading spinner -->
+            <template lwc:if={isBusy}>
+                <lightning-spinner
+                    alternative-text="Loading"
+                    size="small">
+                </lightning-spinner>
+            </template>
+
+            <!-- Error message -->
+            <template lwc:if={errorMessage}>
+                <p
+                    role="alert"
+                    class="slds-text-color_error slds-m-bottom_small">
+                    {errorMessage}
+                </p>
+            </template>
+
+            <!-- Loaded data -->
+            <template lwc:if={isLoaded}>
+
+                <!-- Regional YTD sales -->
+                <p class="slds-m-bottom_small">
+                    Regional YTD Sales:
+
+                    <lightning-formatted-number
+                        value={regionSummary.regionYearToDateSales}
+                        format-style="currency">
+                    </lightning-formatted-number>
+                </p>
+
+                <!-- Selected count -->
+                <p class="slds-m-bottom_small">
+                    Selected Properties:
+                    {selectedCount} (maximum 200)
+                </p>
+
+                <template lwc:if={hasPendingApprovals}>
+
+                    <!-- Pending properties -->
+                    <lightning-datatable
+                        key-field="propertyId"
+                        data={propertiesOnCurrentPage}
+                        columns={columns}
+                        selected-rows={selectedRowsOnPage}
+                        onrowselection={handleRowSelection}
+                        draft-values={draftValues}
+                        oncellchange={handleCellChange}
+                        suppress-bottom-bar>
+                    </lightning-datatable>
+
+                    <!-- Reusable pagination child -->
+                    <c-record-pagination
+                        page-number={currentPageNumber}
+                        page-size={pageSize}
+                        total-records={totalRecords}
+                        disabled={isBusy}
+                        onpagechange={handlePageChange}>
+                    </c-record-pagination>
+
+                </template>
+
+                <template lwc:else>
+                    <p>
+                        There are no properties pending approval.
+                    </p>
+                </template>
+
+            </template>
+        </div>
+
+        <!-- Quick Action footer -->
+        <div slot="footer">
+
+            <lightning-button
+                label="Refresh"
+                onclick={handleRefresh}
+                disabled={isBusy}>
+            </lightning-button>
+
+            <lightning-button
+                label="Cancel"
+                onclick={handleCancel}
+                disabled={isBusy}
+                class="slds-m-left_x-small">
+            </lightning-button>
+
+            <lightning-button
+                label="Approve and Continue"
+                onclick={handleSubmitAndContinue}
+                disabled={isSubmitDisabled}
+                class="slds-m-left_x-small">
+            </lightning-button>
+
+            <lightning-button
+                label="Approve"
+                variant="brand"
+                onclick={handleSubmit}
+                disabled={isSubmitDisabled}
+                class="slds-m-left_x-small">
+            </lightning-button>
+
+        </div>
+    </lightning-card>
+</template>

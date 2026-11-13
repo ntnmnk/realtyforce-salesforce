@@ -1,0 +1,105 @@
+<template>
+  <lightning-card title={cardTitle}>
+    <div class="slds-p-around_medium slds-is-relative">
+      <template lwc:if={isBusy}
+        ><lightning-spinner
+          alternative-text="Loading"
+          size="small"
+        ></lightning-spinner
+      ></template>
+      <template lwc:if={errorMessage}
+        ><p role="alert" class="slds-text-color_error">
+          {errorMessage}
+        </p></template
+      >
+      <template lwc:if={isLoaded}>
+        <p>Working properties: {officeSummary.workingPropertyCount}</p>
+        <p>Remaining capacity: {officeSummary.remainingClaimCapacity}</p>
+        <p>
+          YTD Sales:
+          <lightning-formatted-number
+            value={officeSummary.yearToDateSales}
+            format-style="currency"
+          ></lightning-formatted-number>
+        </p>
+        <p>
+          YTD Commissions:
+          <lightning-formatted-number
+            value={officeSummary.yearToDateCommissions}
+            format-style="currency"
+          ></lightning-formatted-number>
+        </p>
+        <p class="slds-m-vertical_small">
+          Selected properties: {selectedCount}
+        </p>
+        <template lwc:if={hasProperties}>
+          <lightning-datatable
+            key-field="propertyId"
+            data={propertiesOnCurrentPage}
+            columns={columns}
+            selected-rows={selectedRowsOnPage}
+            onrowselection={handleRowSelection}
+          >
+          </lightning-datatable>
+          <nav aria-label="Property pages" class="slds-m-top_medium">
+            <lightning-button
+              data-action="first"
+              label="First"
+              onclick={handleFirst}
+              disabled={isPreviousDisabled}
+            ></lightning-button>
+            <lightning-button
+              data-action="previous"
+              label="Previous"
+              onclick={handlePrevious}
+              disabled={isPreviousDisabled}
+            ></lightning-button>
+            <span class="slds-m-horizontal_small"
+              >Page {currentPageNumber} of {totalPages}</span
+            >
+            <lightning-button
+              data-action="next"
+              label="Next"
+              onclick={handleNext}
+              disabled={isNextDisabled}
+            ></lightning-button>
+            <lightning-button
+              data-action="last"
+              label="Last"
+              onclick={handleLast}
+              disabled={isNextDisabled}
+            ></lightning-button>
+          </nav>
+        </template>
+        <template lwc:else><p>No properties are available.</p></template>
+      </template>
+    </div>
+    <div slot="footer">
+      <lightning-button
+        data-action="refresh"
+        label="Refresh"
+        onclick={handleRefresh}
+        disabled={isBusy}
+      ></lightning-button>
+      <lightning-button
+        data-action="cancel"
+        label="Cancel"
+        onclick={handleCancel}
+        disabled={isBusy}
+      ></lightning-button>
+      <lightning-button
+        data-action="continue"
+        label="Claim and Continue"
+        onclick={handleSubmitAndContinue}
+        disabled={isSubmitDisabled}
+      ></lightning-button>
+      <lightning-button
+        data-action="submit"
+        label="Claim"
+        variant="brand"
+        onclick={handleSubmit}
+        disabled={isSubmitDisabled}
+      ></lightning-button>
+    </div>
+  </lightning-card>
+</template>

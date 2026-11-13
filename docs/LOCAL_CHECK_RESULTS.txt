@@ -1,0 +1,31 @@
+mb-lint-pass.log
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> salesforce-app@1.0.0 lint
+> eslint **/{aura,lwc}/**/*.js
+
+
+
+mb-jest-pass.log
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> salesforce-app@1.0.0 test:unit
+> sfdx-lwc-jest -- --runInBand
+
+PASS force-app/main/default/lwc/claimProperties/__tests__/claimProperties.test.js
+PASS force-app/main/default/lwc/approveCommissions/__tests__/approveCommissions.test.js
+
+Test Suites: 2 passed, 2 total
+Tests:       12 passed, 12 total
+Snapshots:   0 total
+Time:        1.374 s
+Ran all test suites.
+
+
+mb-structure.log
+PASS: 28 Apex class/metadata pairs, 148 XML files, custom field references, LWC Apex imports and bundles.
+
+
+mb-format-check.log
+Checking formatting...
+All matched files use Prettier code style!

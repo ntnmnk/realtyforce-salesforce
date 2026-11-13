@@ -1,0 +1,3 @@
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata"><description
+  >Marks agent users for the direct-approval guard.</description><label
+  >Real Estate Agent</label></CustomPermission>

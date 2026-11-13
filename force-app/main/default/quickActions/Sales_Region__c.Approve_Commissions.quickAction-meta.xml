@@ -1,0 +1,5 @@
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata"><label
+  >Approve Commissions</label><lightningWebComponent
+  >approveCommissions</lightningWebComponent><optionsCreateFeedItem
+  >false</optionsCreateFeedItem><type
+  >LightningWebComponent</type></QuickAction>
